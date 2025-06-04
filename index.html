@@ -7,10 +7,32 @@
     <title>Negotia - Negotiation Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        .blurred {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    </style>
 </head>
 
 <body class="bg-black text-white min-h-screen flex flex-col">
+    <!-- Close Confirmation Modal -->
+    <div id="close-confirmation"
+        class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+        <div
+            class="bg-gray-900 p-6 rounded-xl shadow-lg text-white w-full max-w-md space-y-6 animate-fade-in text-center">
+            <p class="text-lg font-semibold">Are you sure you want to close this negotiation session?</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-close" class="glow-on-hover w-28">Yes</button>
+                <button id="cancel-close" class="glow-on-hover w-28">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <div class="flex-1 flex flex-col max-w-6xl mx-auto p-6 w-full">
+        <!-- Navbar -->
         <nav class="flex justify-between items-center mb-10">
             <div class="flex items-center">
                 <div class="bg-red-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold">N
@@ -18,18 +40,19 @@
                 <span class="text-white text-xl ml-2">Negotia</span>
             </div>
             <div class="flex items-center space-x-4">
-                <button
+                <button id="terms-btn"
                     class="bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition">Terms</button>
-                <button
+                <button id="about-btn"
                     class="bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition">About</button>
             </div>
         </nav>
 
+        <!-- Hero -->
         <div class="hero-section flex-1 flex flex-col justify-center items-center text-center">
             <h1 class="text-white text-6xl font-bold mb-6">We simplify the negotiation<br />process between parties.
             </h1>
             <p class="text-gray-300 text-xl mb-8">Instant comparisons, clear insights, and smart deal suggestions.</p>
-            <button id="start-btn" class="glow-on-hover flex items-center justify-center gap-2 w-64">
+            <button id="start-btn" class="glow-on-hover flex items-center justify-center gap-2 w-80">
                 Start a New Negotiation
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -40,9 +63,10 @@
             </button>
         </div>
 
+        <!-- Negotiation Section -->
         <div id="negotiation-content" class="hidden space-y-6">
             <div class="text-center">
-                <div class="mb-6 flex justify-center">
+                <div class="mb-6 flex flex-wrap justify-center items-center gap-4">
                     <button id="share-link-btn" class="glow-on-hover flex items-center justify-center gap-2 w-72">
                         Share Negotiation Link
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
@@ -52,8 +76,11 @@
                             <line x1="12" y1="2" x2="12" y2="15"></line>
                         </svg>
                     </button>
+                    <button id="close-session-btn" class="glow-on-hover w-72">Close This Session</button>
                 </div>
+            </div>
 
+            <div class="flex justify-center mb-6">
                 <div class="inline-block bg-gray-900 bg-opacity-50 rounded-xl p-6">
                     <h2 class="text-white text-xl mb-4">Negotiation Details</h2>
                     <div class="space-y-2 text-left">
@@ -63,29 +90,30 @@
                         </div>
                         <div class="flex gap-2 text-white items-center">
                             <span class="text-gray-400 mr-2">Currency Type :</span>
-                            <span id="currency-type-container">
-                                <span id="currency-type" class="font-semibold"></span>
-                            </span>
+                            <span id="currency-type-container"></span>
+                        </div>
+                        <div class="flex gap-2 text-white items-center">
+                            <span class="text-gray-400">Your Role :</span>
+                            <span id="user-role" class="font-semibold text-green-400">-</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Negotiator A -->
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl p-6">
+                <div id="box-a" class="bg-gray-900 bg-opacity-50 rounded-xl p-6">
                     <h2 class="text-white text-xl mb-4">Negotiator A</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Minimum Offer:</span>
                             <input type="number" id="negA-min-input"
-                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60"
                                 placeholder="Enter minimum offer" />
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Maximum Offer:</span>
                             <input type="number" id="negA-max-input"
-                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60"
                                 placeholder="Enter maximum offer" />
                         </div>
                         <div class="flex justify-between">
@@ -99,20 +127,19 @@
                     </div>
                 </div>
 
-                <!-- Negotiator B -->
-                <div class="bg-gray-900 bg-opacity-50 rounded-xl p-6">
+                <div id="box-b" class="bg-gray-900 bg-opacity-50 rounded-xl p-6">
                     <h2 class="text-white text-xl mb-4">Negotiator B</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Minimum Offer:</span>
                             <input type="number" id="negB-min-input"
-                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60"
                                 placeholder="Enter minimum offer" />
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-400">Maximum Offer:</span>
                             <input type="number" id="negB-max-input"
-                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60"
                                 placeholder="Enter maximum offer" />
                         </div>
                         <div class="flex justify-between">
@@ -127,9 +154,9 @@
                 </div>
             </div>
 
-            <div id="final-suggestion-section" class="bg-gray-900 bg-opacity-50 rounded-xl p-6 mt-6 hidden">
+            <div id="final-suggestion-section" class="bg-gray-900 bg-opacity-50 rounded-xl p-6 mt-6 hidden text-center">
                 <h2 class="text-white text-xl mb-4">Final Suggested Value</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <p class="text-gray-400">Average A</p>
                         <p class="text-white text-2xl" id="avgA">-</p>
@@ -147,18 +174,70 @@
         </div>
     </div>
 
+    <!-- Share Modal -->
+    <div id="share-link-modal"
+        class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-900 p-6 rounded-xl shadow-lg text-center space-y-4 w-full max-w-md animate-fade-in">
+            <p class="text-white text-lg font-semibold">Share this link</p>
+            <input id="share-link-input" readonly class="w-full px-4 py-2 rounded bg-gray-800 text-white" />
+            <button id="close-share-modal" class="glow-on-hover w-28 mt-4">Close</button>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="terms-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+        <div
+            class="bg-gray-900 p-6 rounded-xl shadow-lg text-white w-full max-w-xl space-y-4 overflow-y-auto max-h-[80vh] animate-fade-in">
+            <h2 class="text-xl font-bold text-center">Terms & Conditions</h2>
+            <ul class="list-disc list-inside space-y-2 text-sm text-gray-300 text-left">
+                <li><strong>Usage Purpose:</strong> Negotia helps parties negotiate price ranges, offering calculated
+                    suggestions. It doesn’t enforce agreements.</li>
+                <li><strong>Data Privacy:</strong> All data is stored locally on your device and is automatically
+                    removed after 1 hour.</li>
+                <li><strong>No Legal Liability:</strong> The platform provides suggestions without warranties. You're
+                    responsible for final agreements.</li>
+                <li><strong>Session Expiry:</strong> Each session is temporary and expires after 1 hour.</li>
+                <li><strong>Fair Use:</strong> Misuse of the platform for spam, scraping, or malicious activity is
+                    prohibited.</li>
+            </ul>
+            <div class="text-center">
+                <button id="close-terms-modal" class="glow-on-hover w-28">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+        <div
+            class="bg-gray-900 p-6 rounded-xl shadow-lg text-white w-full max-w-xl space-y-4 overflow-y-auto max-h-[80vh] animate-fade-in">
+            <h2 class="text-xl font-bold text-center">About Negotia</h2>
+            <p class="text-sm text-gray-300 text-left">
+                <strong>Negotia</strong> is a simple web-based tool designed to streamline the negotiation process
+                between two parties. It allows each party to input their acceptable offer ranges and provides a smart,
+                data-based final suggestion to help reach a mutually beneficial agreement.
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-sm text-gray-300 text-left">
+                <li><strong>Instant Calculations:</strong> Automatically computes averages and final fair value
+                    suggestions.</li>
+                <li><strong>Currency Selection:</strong> Choose from a list of global currencies for clarity and
+                    context.</li>
+                <li><strong>Private & Local:</strong> No server-side storage — all session data is saved temporarily in
+                    your browser.</li>
+                <li><strong>Free & Open:</strong> This tool is open to all and maintained by the community.</li>
+            </ul>
+            <div class="text-center">
+                <button id="close-about-modal" class="glow-on-hover w-28">Close</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="text-center text-gray-400 py-6">
         Copyright ©2025 All rights reserved |
-        Page is made by
-        <a href="https://github.com/sadmaxie" target="_blank" rel="noopener noreferrer"
+        Page is made by <a href="https://github.com/sadmaxie" target="_blank" rel="noopener noreferrer"
             class="text-blue-400 hover:underline">sad maxie</a>
     </footer>
 
-    <!-- Main Script -->
-    <script type="module">
-        import { initNegotiationApp } from './assets/js/script.js';
-        initNegotiationApp(); // Entry point for dynamic behavior
-    </script>
+    <script src="assets/js/script.js"></script>
 </body>
 
 </html>
