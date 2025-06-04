@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Negotia - Negotiation Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body class="bg-black text-white min-h-screen flex flex-col">
+    <div class="flex-1 flex flex-col max-w-6xl mx-auto p-6 w-full">
+        <nav class="flex justify-between items-center mb-10">
+            <div class="flex items-center">
+                <div class="bg-red-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold">N
+                </div>
+                <span class="text-white text-xl ml-2">Negotia</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button
+                    class="bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition">Terms</button>
+                <button
+                    class="bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition">About</button>
+            </div>
+        </nav>
+
+        <div class="hero-section flex-1 flex flex-col justify-center items-center text-center">
+            <h1 class="text-white text-6xl font-bold mb-6">We simplify the negotiation<br />process between parties.
+            </h1>
+            <p class="text-gray-300 text-xl mb-8">Instant comparisons, clear insights, and smart deal suggestions.</p>
+            <button id="start-btn" class="glow-on-hover flex items-center justify-center gap-2 w-64">
+                Start a New Negotiation
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 16 16 12 12 8" />
+                    <line x1="8" x2="16" y1="12" y2="12" />
+                </svg>
+            </button>
+        </div>
+
+        <div id="negotiation-content" class="hidden space-y-6">
+            <div class="text-center">
+                <div class="mb-6 flex justify-center">
+                    <button id="share-link-btn" class="glow-on-hover flex items-center justify-center gap-2 w-72">
+                        Share Negotiation Link
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                            <polyline points="16 6 12 2 8 6"></polyline>
+                            <line x1="12" y1="2" x2="12" y2="15"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="inline-block bg-gray-900 bg-opacity-50 rounded-xl p-6">
+                    <h2 class="text-white text-xl mb-4">Negotiation Details</h2>
+                    <div class="space-y-2 text-left">
+                        <div class="flex gap-2 text-white">
+                            <span class="text-gray-400">Negotiation ID :</span>
+                            <span id="negotiation-id" class="font-semibold"></span>
+                        </div>
+                        <div class="flex gap-2 text-white items-center">
+                            <span class="text-gray-400 mr-2">Currency Type :</span>
+                            <span id="currency-type-container">
+                                <span id="currency-type" class="font-semibold"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Negotiator A -->
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl p-6">
+                    <h2 class="text-white text-xl mb-4">Negotiator A</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Minimum Offer:</span>
+                            <input type="number" id="negA-min-input"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                placeholder="Enter minimum offer" />
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Maximum Offer:</span>
+                            <input type="number" id="negA-max-input"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                placeholder="Enter maximum offer" />
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Initial Average:</span>
+                            <span class="text-white" id="negA-avg">-</span>
+                        </div>
+                        <div class="flex justify-center gap-4 mt-4">
+                            <button id="confirm-A" class="glow-on-hover">Confirm</button>
+                            <button id="edit-A" class="glow-on-hover">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Negotiator B -->
+                <div class="bg-gray-900 bg-opacity-50 rounded-xl p-6">
+                    <h2 class="text-white text-xl mb-4">Negotiator B</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Minimum Offer:</span>
+                            <input type="number" id="negB-min-input"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                placeholder="Enter minimum offer" />
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Maximum Offer:</span>
+                            <input type="number" id="negB-max-input"
+                                class="bg-gray-700 text-white px-4 py-2 rounded w-60 text-left text-base"
+                                placeholder="Enter maximum offer" />
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Initial Average:</span>
+                            <span class="text-white" id="negB-avg">-</span>
+                        </div>
+                        <div class="flex justify-center gap-4 mt-4">
+                            <button id="confirm-B" class="glow-on-hover">Confirm</button>
+                            <button id="edit-B" class="glow-on-hover">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="final-suggestion-section" class="bg-gray-900 bg-opacity-50 rounded-xl p-6 mt-6 hidden">
+                <h2 class="text-white text-xl mb-4">Final Suggested Value</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-gray-400">Average A</p>
+                        <p class="text-white text-2xl" id="avgA">-</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400">Average B</p>
+                        <p class="text-white text-2xl" id="avgB">-</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400">Final</p>
+                        <p class="text-white text-2xl" id="finalVal">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-gray-400 py-6">
+        Copyright ©2025 All rights reserved |
+        Page is made by
+        <a href="https://github.com/sadmaxie" target="_blank" rel="noopener noreferrer"
+            class="text-blue-400 hover:underline">sad maxie</a>
+    </footer>
+
+    <!-- Main Script -->
+    <script type="module">
+        import { initNegotiationApp } from './assets/js/script.js';
+        initNegotiationApp(); // Entry point for dynamic behavior
+    </script>
+</body>
+
+</html>
